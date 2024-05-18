@@ -1,0 +1,27 @@
+function calculateSolidScore(transactionHistory, tokenBalances, stakingAccounts, accountAge) {
+  let score = 0;
+  
+  // Transaction volume weighting
+  score += transactionHistory.length * 0.1;
+
+  // Token diversity weighting
+  const uniqueTokens = new Set(tokenBalances.map(balance => balance.mint));
+  score += uniqueTokens.size * 0.5;
+
+  // Staking activity weighting
+  score += stakingAccounts.length * 0.3;
+
+  // Account age weighting
+  score += accountAge * 0.2;
+
+  return score;
+}
+
+// Example data for testing
+const exampleTransactionHistory = [/* transaction data */];
+const exampleTokenBalances = [/* token balances data */];
+const exampleStakingAccounts = [/* staking accounts data */];
+const exampleAccountAge = 365;  // in days
+
+const solidScore = calculateSolidScore(exampleTransactionHistory, exampleTokenBalances, exampleStakingAccounts, exampleAccountAge);
+console.log('SOLID Score:', solidScore);
