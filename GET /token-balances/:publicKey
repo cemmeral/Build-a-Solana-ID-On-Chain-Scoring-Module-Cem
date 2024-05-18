@@ -1,0 +1,9 @@
+app.get('/token-balances/:publicKey', async (req, res) => {
+  try {
+    const { publicKey } = req.params;
+    const tokenBalances = await getTokenBalances(publicKey);
+    res.json(tokenBalances);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
