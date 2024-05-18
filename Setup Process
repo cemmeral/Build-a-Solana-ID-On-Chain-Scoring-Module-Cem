@@ -1,0 +1,9 @@
+git clone <repository_url>
+cd repository_name
+
+npm install
+
+
+node index.js
+
+
