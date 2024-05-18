@@ -1,0 +1,35 @@
+const solanaWeb3 = require('@solana/web3.js');
+const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+
+// Function to get transaction history for a given public key
+async function getTransactionHistory(publicKey) {
+  let transactions = await connection.getConfirmedSignaturesForAddress2(new solanaWeb3.PublicKey(publicKey));
+  return transactions;
+}
+
+// Function to get token balances for a given public key
+async function getTokenBalances(publicKey) {
+  let tokenAccounts = await connection.getTokenAccountsByOwner(new solanaWeb3.PublicKey(publicKey), { programId: solanaWeb3.TOKEN_PROGRAM_ID });
+  return tokenAccounts.value.map(account => ({
+    mint: account.account.data.parsed.info.mint,
+    balance: account.account.data.parsed.info.tokenAmount.uiAmount
+  }));
+}
+
+// Function to get staking accounts for a given public key
+async function getStakingAccounts(publicKey) {
+  let stakingAccounts = await connection.getParsedProgramAccounts(new solanaWeb3.PublicKey(publicKey), { filters: [{ dataSize: 200 }] });
+  return stakingAccounts;
+}
+
+// Example usage
+(async () => {
+  const publicKey = 'EnterPublicKeyHere';
+  const transactions = await getTransactionHistory(publicKey);
+  const tokenBalances = await getTokenBalances(publicKey);
+  const stakingAccounts = await getStakingAccounts(publicKey);
+
+  console.log('Transactions:', transactions);
+  console.log('Token Balances:', tokenBalances);
+  console.log('Staking Accounts:', stakingAccounts);
+})();
