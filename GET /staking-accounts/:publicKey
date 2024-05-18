@@ -1,0 +1,9 @@
+app.get('/staking-accounts/:publicKey', async (req, res) => {
+  try {
+    const { publicKey } = req.params;
+    const stakingAccounts = await getStakingAccounts(publicKey);
+    res.json(stakingAccounts);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
